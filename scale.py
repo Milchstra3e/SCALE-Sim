@@ -7,7 +7,7 @@ from absl import app
 
 FLAGS = flags.FLAGS
 #name of flag | default | explanation
-flags.DEFINE_string("arch_config","./configs/scale.cfg","file where we are getting our architechture from")
+flags.DEFINE_string("arch_config","./configs/google.cfg","file where we are getting our architechture from")
 flags.DEFINE_string("network","./topologies/alexnet.csv","topology that we are reading")
 
 
@@ -133,40 +133,40 @@ class scale:
 
 
     def cleanup(self):
-        if not os.path.exists("./outputs/"):
-            os.system("mkdir ./outputs")
+        if not os.path.exists(".\\outputs\\"):
+            os.system("mkdir .\\outputs")
 
         net_name = self.topology_file.split('/')[-1].split('.')[0]
 
-        path = "./output/scale_out"
+        path = ".\\output\\scale_out"
         if self.run_name == "":
-            path = "./outputs/" + net_name +"_"+ self.dataflow
+            path = ".\\outputs\\" + net_name +"_"+ self.dataflow
         else:
-            path = "./outputs/" + self.run_name
+            path = ".\\outputs\\" + self.run_name
 
         if not os.path.exists(path):
             os.system("mkdir " + path)
         else:
             t = time.time()
             new_path= path + "_" + str(t)
-            os.system("mv " + path + " " + new_path)
+            os.system("move " + path + " " + new_path)
             os.system("mkdir " + path)
 
 
-        cmd = "mv *.csv " + path
+        cmd = "move *.csv " + path
         os.system(cmd)
 
-        cmd = "mkdir " + path +"/layer_wise"
+        cmd = "mkdir " + path +"\\layer_wise"
         os.system(cmd)
 
-        cmd = "mv " + path +"/*sram* " + path +"/layer_wise"
+        cmd = "move " + path +"\\*sram* " + path +"\\layer_wise"
         os.system(cmd)
 
-        cmd = "mv " + path +"/*dram* " + path +"/layer_wise"
+        cmd = "move " + path +"\\*dram* " + path +"\\layer_wise"
         os.system(cmd)
 
         if self.save_space == True:
-            cmd = "rm -rf " + path +"/layer_wise"
+            cmd = "rm -rf " + path +"\\layer_wise"
             os.system(cmd)
 
 
